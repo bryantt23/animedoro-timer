@@ -1,0 +1,11 @@
+.active {
+  background-color: green;
+}
+
+.paused {
+  background-color: black;
+}
+
+.finished {
+  background-color: red;
+}
