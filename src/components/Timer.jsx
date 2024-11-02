@@ -4,7 +4,7 @@ import './Timer.css'
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
 const rooster = new Audio('../../public/rooster.wav')
 
-function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage }) {
+function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
@@ -77,6 +77,15 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
             <button onClick={buttonFunction()}>
                 {buttonText()}
             </button>
+            {
+                resetMainTimer && <button onClick={() => {
+                    if (confirm("Are you sure?")) {
+                        resetMainTimer()
+                        handlePause()
+                        setSeconds(initialSeconds)
+                    }
+                }}>Reset</button>
+            }
         </div>
     )
 }

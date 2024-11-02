@@ -28,6 +28,10 @@ function TimerContainer() {
         localStorage.setItem('seconds', seconds)
     }
 
+    const resetMainTimer = () => {
+        localStorage.removeItem('seconds')
+    }
+
     return (
         <div style={{
             display: 'flex',
@@ -58,6 +62,7 @@ function TimerContainer() {
                     title={"Hardcore"}
                     handleChildTimerFinish={mainTimerHandleFinish}
                     setSecondsLocalStorage={setSecondsLocalStorage}
+                    resetMainTimer={resetMainTimer}
                 />
             </div>
         </div>
