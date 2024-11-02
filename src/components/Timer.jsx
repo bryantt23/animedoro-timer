@@ -4,7 +4,7 @@ import './Timer.css'
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
 const rooster = new Audio('../../public/rooster.wav')
 
-function Timer({ initialSeconds, title, handleChildTimerFinish }) {
+function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
@@ -29,6 +29,9 @@ function Timer({ initialSeconds, title, handleChildTimerFinish }) {
             timerRef.current = setInterval(() => {
                 setSeconds(prev => {
                     setTimerState(TIMER_STATES.ACTIVE)
+                    if (setSecondsLocalStorage) {
+                        setSecondsLocalStorage(prev - 1)
+                    }
                     return prev - 1
                 })
             }, 1000)
