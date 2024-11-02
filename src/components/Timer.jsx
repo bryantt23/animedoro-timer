@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import './Timer.css'
 
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
+const rooster = new Audio('../../public/rooster.wav')
 
 function Timer({ initialSeconds }) {
     const localInitialSeconds = JSON.parse(localStorage.getItem('seconds')) || initialSeconds
     const [seconds, setSeconds] = useState(localInitialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
-    const rooster = new Audio('../../public/rooster.wav')
-
 
     useEffect(() => {
         return () => {
@@ -27,7 +26,7 @@ function Timer({ initialSeconds }) {
                         setTimerState(TIMER_STATES.FINISHED)
                         localStorage.removeItem('seconds')
                         rooster.play()
-                        return "done"
+                        return 0
                     }
                     else {
                         localStorage.setItem('seconds', prev - 1)
@@ -39,11 +38,21 @@ function Timer({ initialSeconds }) {
         }
     }
 
+    const handlePause = () => {
+        if (timerRef.current !== null) {
+            clearInterval(timerRef.current)
+            timerRef.current = null
+            setTimerState(TIMER_STATES.PAUSED)
+        }
+    }
+
     return (
         <div className={timerState}>
-            <h1>    {timerState}</h1>
+            <h1>{timerState}</h1>
             <p>{seconds}</p>
-            <button onClick={handleStart}>Start</button>
+            <button
+                onClick={(timerState === TIMER_STATES.PAUSED || timerState === TIMER_STATES.FINISHED) ? handleStart : handlePause}>
+                {(timerState === TIMER_STATES.PAUSED || timerState === TIMER_STATES.FINISHED) ? 'Start' : 'Pause'}</button>
         </div>
     )
 }
