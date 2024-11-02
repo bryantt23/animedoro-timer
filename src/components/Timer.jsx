@@ -16,23 +16,23 @@ function Timer({ initialSeconds, title, handleChildTimerFinish }) {
         }
     }, [])
 
+    useEffect(() => {
+        if (seconds === 0) {
+            clearInterval(timerRef.current)
+            timerRef.current = null
+            setTimerState(TIMER_STATES.FINISHED)
+            localStorage.removeItem('seconds')
+            rooster.play()
+        }
+    }, [seconds])
+
     const handleStart = () => {
         if (timerRef.current === null) {
             timerRef.current = setInterval(() => {
                 setSeconds(prev => {
-                    if (prev === 0) {
-                        clearInterval(timerRef.current)
-                        timerRef.current = null
-                        setTimerState(TIMER_STATES.FINISHED)
-                        localStorage.removeItem('seconds')
-                        rooster.play()
-                        return 0
-                    }
-                    else {
-                        localStorage.setItem('seconds', prev - 1)
-                        setTimerState(TIMER_STATES.ACTIVE)
-                        return prev - 1
-                    }
+                    localStorage.setItem('seconds', prev - 1)
+                    setTimerState(TIMER_STATES.ACTIVE)
+                    return prev - 1
                 })
             }, 1000)
         }
