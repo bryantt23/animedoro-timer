@@ -4,7 +4,7 @@ import './Timer.css'
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
 const rooster = new Audio('../../public/rooster.wav')
 
-function Timer({ initialSeconds }) {
+function Timer({ initialSeconds, title, handleChildTimerFinish }) {
     const localInitialSeconds = JSON.parse(localStorage.getItem('seconds')) || initialSeconds
     const [seconds, setSeconds] = useState(localInitialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
@@ -46,13 +46,37 @@ function Timer({ initialSeconds }) {
         }
     }
 
+    const buttonFunction = () => {
+        if (timerState === TIMER_STATES.PAUSED) {
+            return handleStart
+        } else if (timerState === TIMER_STATES.FINISHED) {
+            return () => {
+                handleChildTimerFinish()
+                setSeconds(initialSeconds)
+                setTimerState(TIMER_STATES.PAUSED)
+            }
+        } else {
+            return handlePause
+        }
+    }
+
+    const buttonText = () => {
+        if (timerState === TIMER_STATES.PAUSED) {
+            return 'Start'
+        } else if (timerState === TIMER_STATES.FINISHED) {
+            return 'Next'
+        } else {
+            return 'Pause'
+        }
+    }
+
     return (
         <div className={timerState}>
-            <h1>{timerState}</h1>
+            <h1>{title}</h1>
             <p>{seconds}</p>
-            <button
-                onClick={(timerState === TIMER_STATES.PAUSED || timerState === TIMER_STATES.FINISHED) ? handleStart : handlePause}>
-                {(timerState === TIMER_STATES.PAUSED || timerState === TIMER_STATES.FINISHED) ? 'Start' : 'Pause'}</button>
+            <button onClick={buttonFunction()}>
+                {buttonText()}
+            </button>
         </div>
     )
 }

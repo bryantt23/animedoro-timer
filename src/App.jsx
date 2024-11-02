@@ -1,10 +1,10 @@
 import './App.css'
-import Timer from './components/Timer'
+import TimerContainer from './components/TimerContainer'
 
 function App() {
   return (
     <>
-      <Timer initialSeconds={3} />
+      <TimerContainer />
     </>
   )
 }
