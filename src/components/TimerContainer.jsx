@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import Timer from './Timer'
 import './TimerContainer.css'
 
-const WORK_TIME = 15 * 60, REST_TIME = 90, ANIMEDORO_TIME = 60 * 60
+const WORK_TIME = 15 * 60, REST_TIME = 90
+export const ANIMEDORO_TIME = 60 * 60
 
 const rooster = new Audio('../../public/rooster.wav')
 const smallGong = new Audio('../../public/small-gong.mp3')

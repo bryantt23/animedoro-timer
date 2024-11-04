@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Timer.css'
+import { ANIMEDORO_TIME } from './TimerContainer'
 
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
 
@@ -103,7 +104,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
                                 if (confirm("Are you sure?")) {
                                     resetMainTimer()
                                     handlePause()
-                                    setSeconds(initialSeconds)
+                                    setSeconds(ANIMEDORO_TIME)
                                 }
                             }}>Reset</button>
                     )
