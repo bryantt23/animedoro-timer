@@ -1,8 +1,11 @@
+@font-face {
+  font-family: 'DS-Digital';
+  src: url('../assets/ds_digital/DS-DIGI.TTF') format('truetype');
+}
+
 .timer-display {
-  font-size: 5em;
-  color: white;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px black;
+  font-family: 'DS-Digital', sans-serif;
+  font-size: 7em;
   margin: 0;
 }
 

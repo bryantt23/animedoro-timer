@@ -49,7 +49,7 @@ function TimerContainer() {
                 {timerState === TIMER_STATES.WORK ?
                     <Timer
                         key="work"
-                        initialSeconds={3}
+                        initialSeconds={WORK_TIME}
                         title={"Doing"}
                         handleChildTimerFinish={handleChildTimerFinish}
                         sound={smallGong}
@@ -57,7 +57,7 @@ function TimerContainer() {
                     :
                     <Timer
                         key="rest"
-                        initialSeconds={3}
+                        initialSeconds={REST_TIME}
                         title={"Being"}
                         handleChildTimerFinish={handleChildTimerFinish}
                         sound={rooster}
