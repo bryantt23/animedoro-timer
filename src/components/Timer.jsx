@@ -3,6 +3,12 @@ import './Timer.css'
 
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
 
+const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0')
+    const seconds = (totalSeconds % 60).toString().padStart(2, '0')
+    return `${minutes}:${seconds}`
+}
+
 function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
@@ -81,22 +87,28 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
         }
     }
 
+
     return (
-        <div className={timerState}>
-            <h1>{title}</h1>
-            <p>{seconds}</p>
-            <button onClick={buttonFunction()}>
-                {buttonText()}
-            </button>
-            {
-                resetMainTimer && <button onClick={() => {
-                    if (confirm("Are you sure?")) {
-                        resetMainTimer()
-                        handlePause()
-                        setSeconds(initialSeconds)
-                    }
-                }}>Reset</button>
-            }
+        <div className={`${timerState} timer-section`}>
+            <p className='title'>{title}</p>
+            <p className='timer-display'>{formatTime(seconds)}</p>
+            <div className='button-group'>
+                <button className='button' onClick={buttonFunction()}>
+                    {buttonText()}
+                </button>
+                {
+                    resetMainTimer && (
+                        <button className='button'
+                            onClick={() => {
+                                if (confirm("Are you sure?")) {
+                                    resetMainTimer()
+                                    handlePause()
+                                    setSeconds(initialSeconds)
+                                }
+                            }}>Reset</button>
+                    )
+                }
+            </div>
         </div>
     )
 }

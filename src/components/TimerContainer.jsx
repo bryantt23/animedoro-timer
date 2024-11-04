@@ -1,14 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Timer from './Timer'
+import './TimerContainer.css'
+
+const WORK_TIME = 15 * 60, REST_TIME = 90, ANIMEDORO_TIME = 60 * 60
 
 const rooster = new Audio('../../public/rooster.wav')
 const smallGong = new Audio('../../public/small-gong.mp3')
 const largeGong = new Audio('../../public/large-gong.mp3')
 
-const TIMER_STATES = { WORK: "work", REST: "rest" }
+const TIMER_STATES = { WORK: "Do", REST: "Be" }
 
 function TimerContainer() {
-    const [timerState, setTimerState] = useState(TIMER_STATES.WORK)
+    const [timerState, setTimerState] = useState(TIMER_STATES.REST)
     const localInitialSeconds = JSON.parse(localStorage.getItem('seconds'))
 
     const toggleWorkRestState = () => {
@@ -38,36 +41,33 @@ function TimerContainer() {
     }
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '80vh'
-        }}>
-            <div style={{ height: '50%', backgroundColor: 'lightgreen' }}>
-                <p>current state {JSON.stringify(timerState)}</p>
-                <p>Toggle <button onClick={toggleWorkRestState}>{timerState}</button></p>
+        <div className='container'>
+            <div className='toggle-section'>
+                <button className='button' onClick={toggleWorkRestState}>Switch to {`${timerState === TIMER_STATES.REST ? 'Do' : 'Be'}`}ing</button>
+            </div>
+            <div className='timer-section'>
                 {timerState === TIMER_STATES.WORK ?
                     <Timer
                         key="work"
                         initialSeconds={3}
-                        title={"Work"}
+                        title={"Doing"}
                         handleChildTimerFinish={handleChildTimerFinish}
                         sound={smallGong}
                     />
                     :
                     <Timer
                         key="rest"
-                        initialSeconds={2}
-                        title={"Rest"}
+                        initialSeconds={3}
+                        title={"Being"}
                         handleChildTimerFinish={handleChildTimerFinish}
                         sound={rooster}
                     />
                 }
             </div>
-            <div style={{ height: '50%', backgroundColor: 'lightblue' }}>
+            <div className='timer-section'>
                 <Timer
-                    initialSeconds={localInitialSeconds || 5}
-                    title={"Hardcore"}
+                    initialSeconds={localInitialSeconds || ANIMEDORO_TIME}
+                    title={"Animedoro"}
                     handleChildTimerFinish={mainTimerHandleFinish}
                     setSecondsLocalStorage={setSecondsLocalStorage}
                     resetMainTimer={resetMainTimer}

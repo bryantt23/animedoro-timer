@@ -1,11 +1,25 @@
+.timer-display {
+  font-size: 5em;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px black;
+  margin: 0;
+}
+
 .active {
-  background-color: green;
+  background-color: lightgreen; /* Green */
 }
 
 .paused {
-  background-color: rgb(102, 100, 100);
+  background-color: lightslategray; /* Dark gray */
 }
 
 .finished {
-  background-color: red;
+  background-color: lightcoral;
+}
+
+.title {
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  margin: 0;
 }
