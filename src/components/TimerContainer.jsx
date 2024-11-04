@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Timer from './Timer'
 
+const rooster = new Audio('../../public/rooster.wav')
+const smallGong = new Audio('../../public/small-gong.mp3')
+const largeGong = new Audio('../../public/large-gong.mp3')
+
 const TIMER_STATES = { WORK: "work", REST: "rest" }
 
 function TimerContainer() {
@@ -29,15 +33,17 @@ function TimerContainer() {
     }
 
     const resetMainTimer = () => {
+        largeGong.pause()
         localStorage.removeItem('seconds')
     }
 
     return (
         <div style={{
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            height: '80vh'
         }}>
-            <div style={{ flex: '1', backgroundColor: 'lightgreen' }}>
+            <div style={{ height: '50%', backgroundColor: 'lightgreen' }}>
                 <p>current state {JSON.stringify(timerState)}</p>
                 <p>Toggle <button onClick={toggleWorkRestState}>{timerState}</button></p>
                 {timerState === TIMER_STATES.WORK ?
@@ -46,6 +52,7 @@ function TimerContainer() {
                         initialSeconds={3}
                         title={"Work"}
                         handleChildTimerFinish={handleChildTimerFinish}
+                        sound={smallGong}
                     />
                     :
                     <Timer
@@ -53,16 +60,18 @@ function TimerContainer() {
                         initialSeconds={2}
                         title={"Rest"}
                         handleChildTimerFinish={handleChildTimerFinish}
+                        sound={rooster}
                     />
                 }
             </div>
-            <div style={{ flex: '1', backgroundColor: 'lightblue', height: '100%' }}>
+            <div style={{ height: '50%', backgroundColor: 'lightblue' }}>
                 <Timer
                     initialSeconds={localInitialSeconds || 5}
                     title={"Hardcore"}
                     handleChildTimerFinish={mainTimerHandleFinish}
                     setSecondsLocalStorage={setSecondsLocalStorage}
                     resetMainTimer={resetMainTimer}
+                    sound={largeGong}
                 />
             </div>
         </div>

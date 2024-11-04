@@ -2,25 +2,36 @@ import React, { useEffect, useRef, useState } from 'react'
 import './Timer.css'
 
 const TIMER_STATES = { ACTIVE: "active", PAUSED: "paused", FINISHED: 'finished' }
-const rooster = new Audio('../../public/rooster.wav')
 
-function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer }) {
+function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
 
     useEffect(() => {
         return () => {
+            sound.loop = false
+            sound.pause()
             clearInterval(timerRef.current)
         }
     }, [])
+
+    useEffect(() => {
+        if (timerState === TIMER_STATES.FINISHED) {
+            sound.loop = true
+            sound.play()
+        }
+        else {
+            sound.loop = false
+            sound.pause()
+        }
+    }, [timerState])
 
     useEffect(() => {
         if (seconds === 0) {
             clearInterval(timerRef.current)
             timerRef.current = null
             setTimerState(TIMER_STATES.FINISHED)
-            rooster.play()
         }
     }, [seconds])
 
@@ -55,7 +66,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
                 setSeconds(initialSeconds)
                 setTimerState(TIMER_STATES.PAUSED)
             }
-        } else {
+        } else if (timerState === TIMER_STATES.ACTIVE) {
             return handlePause
         }
     }
