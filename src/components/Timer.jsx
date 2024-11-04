@@ -61,8 +61,8 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
         if (timerRef.current !== null) {
             clearInterval(timerRef.current)
             timerRef.current = null
-            setTimerState(TIMER_STATES.PAUSED)
         }
+        setTimerState(TIMER_STATES.PAUSED)
     }
 
     const buttonFunction = () => {
@@ -89,15 +89,17 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
         }
     }
 
-
     return (
         <div className={`${timerState} timer-section`}>
             <p className='title'>{title}</p>
             <p className='timer-display'>{formatTime(seconds)}</p>
             <div className='button-group'>
-                <button className='button' onClick={buttonFunction()}>
-                    {buttonText()}
-                </button>
+                {
+                    (setSecondsLocalStorage === undefined || timerState !== TIMER_STATES.FINISHED) &&
+                    (<button className='button' onClick={buttonFunction()}>
+                        {buttonText()}
+                    </button>)
+                }
                 {
                     resetMainTimer && (
                         <button className='button'
