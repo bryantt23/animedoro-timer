@@ -26,6 +26,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
     useEffect(() => {
         if (timerState === TIMER_STATES.FINISHED) {
             sound.loop = true
+            sound.currentTime = 0
             sound.play()
         }
         else {

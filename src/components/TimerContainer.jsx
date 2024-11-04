@@ -5,9 +5,9 @@ import './TimerContainer.css'
 const WORK_TIME = 15 * 60, REST_TIME = 90
 export const ANIMEDORO_TIME = 60 * 60
 
-const rooster = new Audio('../../public/rooster.wav')
-const smallGong = new Audio('../../public/small-gong.mp3')
-const largeGong = new Audio('../../public/large-gong.mp3')
+const rooster = new Audio('/animedoro-timer/rooster.wav');
+const smallGong = new Audio('/animedoro-timer/small-gong.mp3');
+const largeGong = new Audio('/animedoro-timer/large-gong.mp3');
 
 const TIMER_STATES = { WORK: "Do", REST: "Be" }
 
