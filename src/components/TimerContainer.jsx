@@ -50,25 +50,14 @@ function TimerContainer() {
                 <button className='button' onClick={toggleWorkRestState}>Switch to {`${timerState === TIMER_STATES.REST ? 'Do' : 'Be'}`}ing</button>
             </div>
             <div className='timer-section'>
-                {timerState === TIMER_STATES.WORK ?
-                    <Timer
-                        key="work"
-                        initialSeconds={WORK_TIME}
-                        title={"Doing"}
-                        handleChildTimerFinish={handleChildTimerFinish}
-                        sound={rooster}
-                        runOnLoad={runOnLoad}
-                    />
-                    :
-                    <Timer
-                        key="rest"
-                        initialSeconds={REST_TIME}
-                        title={"Being"}
-                        handleChildTimerFinish={handleChildTimerFinish}
-                        sound={smallGong}
-                        runOnLoad={runOnLoad}
-                    />
-                }
+                <Timer
+                    key={timerState === TIMER_STATES.WORK ? "work" : "rest"}
+                    initialSeconds={timerState === TIMER_STATES.WORK ? WORK_TIME : REST_TIME}
+                    title={timerState === TIMER_STATES.WORK ? "Doing" : "Being"}
+                    handleChildTimerFinish={handleChildTimerFinish}
+                    sound={timerState === TIMER_STATES.WORK ? smallGong : rooster}
+                    runOnLoad={runOnLoad}
+                />
             </div>
             <div className='timer-section'>
                 <Timer
