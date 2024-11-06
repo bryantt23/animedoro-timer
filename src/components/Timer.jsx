@@ -10,6 +10,11 @@ const formatTime = (totalSeconds) => {
     return `${minutes}:${seconds}`
 }
 
+const stopSound = (sound) => {
+    sound.loop = false
+    sound.pause()
+}
+
 function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
@@ -17,8 +22,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
 
     useEffect(() => {
         return () => {
-            sound.loop = false
-            sound.pause()
+            stopSound(sound)
             clearInterval(timerRef.current)
         }
     }, [])
@@ -29,9 +33,25 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
             sound.currentTime = 0
             sound.play()
         }
-        else {
-            sound.loop = false
-            sound.pause()
+        else if (timerState === TIMER_STATES.ACTIVE) {
+            stopSound(sound)
+            if (timerRef.current === null) {
+                timerRef.current = setInterval(() => {
+                    setSeconds(prev => {
+                        if (setSecondsLocalStorage) {
+                            setSecondsLocalStorage(prev - 1)
+                        }
+                        return prev - 1
+                    })
+                }, 1000)
+            }
+        }
+        else if (timerState === TIMER_STATES.PAUSED) {
+            stopSound(sound)
+            if (timerRef.current !== null) {
+                clearInterval(timerRef.current)
+                timerRef.current = null
+            }
         }
     }, [timerState])
 
@@ -44,24 +64,10 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
     }, [seconds])
 
     const handleStart = () => {
-        if (timerRef.current === null) {
-            timerRef.current = setInterval(() => {
-                setSeconds(prev => {
-                    setTimerState(TIMER_STATES.ACTIVE)
-                    if (setSecondsLocalStorage) {
-                        setSecondsLocalStorage(prev - 1)
-                    }
-                    return prev - 1
-                })
-            }, 1000)
-        }
+        setTimerState(TIMER_STATES.ACTIVE)
     }
 
     const handlePause = () => {
-        if (timerRef.current !== null) {
-            clearInterval(timerRef.current)
-            timerRef.current = null
-        }
         setTimerState(TIMER_STATES.PAUSED)
     }
 
