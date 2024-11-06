@@ -53,7 +53,7 @@ function TimerContainer() {
                         initialSeconds={WORK_TIME}
                         title={"Doing"}
                         handleChildTimerFinish={handleChildTimerFinish}
-                        sound={smallGong}
+                        sound={rooster}
                     />
                     :
                     <Timer
@@ -61,7 +61,7 @@ function TimerContainer() {
                         initialSeconds={REST_TIME}
                         title={"Being"}
                         handleChildTimerFinish={handleChildTimerFinish}
-                        sound={rooster}
+                        sound={smallGong}
                     />
                 }
             </div>
