@@ -55,7 +55,7 @@ function TimerContainer() {
                     initialSeconds={timerState === TIMER_STATES.WORK ? WORK_TIME : REST_TIME}
                     title={timerState === TIMER_STATES.WORK ? "Doing" : "Being"}
                     handleChildTimerFinish={handleChildTimerFinish}
-                    sound={timerState === TIMER_STATES.WORK ? smallGong : rooster}
+                    sound={timerState === TIMER_STATES.WORK ? rooster : smallGong}
                     runOnLoad={runOnLoad}
                 />
             </div>
