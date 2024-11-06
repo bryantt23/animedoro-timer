@@ -13,9 +13,11 @@ const TIMER_STATES = { WORK: "Do", REST: "Be" }
 
 function TimerContainer() {
     const [timerState, setTimerState] = useState(TIMER_STATES.REST)
+    const [runOnLoad, setRunOnLoad] = useState(false)
     const localInitialSeconds = JSON.parse(localStorage.getItem('seconds'))
 
     const toggleWorkRestState = () => {
+        setRunOnLoad(true)
         if (timerState === TIMER_STATES.WORK) {
             setTimerState(TIMER_STATES.REST)
         }
@@ -25,6 +27,7 @@ function TimerContainer() {
     }
 
     const handleChildTimerFinish = () => {
+        setRunOnLoad(true)
         toggleWorkRestState()
     }
 
@@ -54,6 +57,7 @@ function TimerContainer() {
                         title={"Doing"}
                         handleChildTimerFinish={handleChildTimerFinish}
                         sound={rooster}
+                        runOnLoad={runOnLoad}
                     />
                     :
                     <Timer
@@ -62,6 +66,7 @@ function TimerContainer() {
                         title={"Being"}
                         handleChildTimerFinish={handleChildTimerFinish}
                         sound={smallGong}
+                        runOnLoad={runOnLoad}
                     />
                 }
             </div>

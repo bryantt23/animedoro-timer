@@ -15,12 +15,15 @@ const stopSound = (sound) => {
     sound.pause()
 }
 
-function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound }) {
+function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound, runOnLoad }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
 
     useEffect(() => {
+        if (runOnLoad) {
+            setTimerState(TIMER_STATES.ACTIVE)
+        }
         return () => {
             stopSound(sound)
             clearInterval(timerRef.current)
