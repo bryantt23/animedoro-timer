@@ -115,7 +115,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
                             onClick={() => {
                                 if (confirm("Are you sure?")) {
                                     resetMainTimer()
-                                    handlePause()
+                                    handleStart()
                                     setSeconds(ANIMEDORO_TIME)
                                 }
                             }}>Reset</button>
