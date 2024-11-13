@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Timer from './Timer'
 import './TimerContainer.css'
+import { useTickingClock } from '../hooks/useTickingClock'
 
 const WORK_TIME = 15 * 60, REST_TIME = 90
 export const ANIMEDORO_TIME = 60 * 60
@@ -55,8 +56,10 @@ function TimerContainer() {
                     initialSeconds={timerState === TIMER_STATES.WORK ? WORK_TIME : REST_TIME}
                     title={timerState === TIMER_STATES.WORK ? "Doing" : "Being"}
                     handleChildTimerFinish={handleChildTimerFinish}
-                    sound={timerState === TIMER_STATES.WORK ? rooster : smallGong}
+                    alarmSound={timerState === TIMER_STATES.WORK ? rooster : smallGong}
                     runOnLoad={runOnLoad}
+                    useTickingClock={useTickingClock}
+                    hasTickingClock={timerState !== TIMER_STATES.WORK}
                 />
             </div>
             <div className='timer-section'>
@@ -66,7 +69,9 @@ function TimerContainer() {
                     handleChildTimerFinish={mainTimerHandleFinish}
                     setSecondsLocalStorage={setSecondsLocalStorage}
                     resetMainTimer={resetMainTimer}
-                    sound={largeGong}
+                    alarmSound={largeGong}
+                    useTickingClock={useTickingClock}
+                    hasTickingClock={false}
                 />
             </div>
         </div>

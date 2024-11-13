@@ -15,29 +15,37 @@ const stopSound = (sound) => {
     sound.pause()
 }
 
-function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound, runOnLoad }) {
+function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, alarmSound, runOnLoad, useTickingClock, hasTickingClock }) {
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
+    const { toggleSound, isVolumeOn, turnOffSound, turnOnSound } = useTickingClock(hasTickingClock)
 
     useEffect(() => {
         if (runOnLoad) {
             setTimerState(TIMER_STATES.ACTIVE)
         }
         return () => {
-            stopSound(sound)
+            stopSound(alarmSound)
             clearInterval(timerRef.current)
+            turnOffSound()
         }
     }, [])
 
     useEffect(() => {
         if (timerState === TIMER_STATES.FINISHED) {
-            sound.loop = true
-            sound.currentTime = 0
-            sound.play()
+            if (useTickingClock) {
+                turnOffSound()
+            }
+            alarmSound.loop = true
+            alarmSound.currentTime = 0
+            alarmSound.play()
         }
         else if (timerState === TIMER_STATES.ACTIVE) {
-            stopSound(sound)
+            if (useTickingClock) {
+                turnOnSound()
+            }
+            stopSound(alarmSound)
             if (timerRef.current === null) {
                 timerRef.current = setInterval(() => {
                     setSeconds(prev => {
@@ -50,7 +58,10 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
             }
         }
         else if (timerState === TIMER_STATES.PAUSED) {
-            stopSound(sound)
+            if (useTickingClock) {
+                turnOffSound()
+            }
+            stopSound(alarmSound)
             if (timerRef.current !== null) {
                 clearInterval(timerRef.current)
                 timerRef.current = null
@@ -103,6 +114,9 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
             <p className='title'>{title}</p>
             <p className='timer-display'>{formatTime(seconds)}</p>
             <div className='button-group'>
+                {
+                    (hasTickingClock && timerState === TIMER_STATES.ACTIVE) && <button className='button' onClick={toggleSound}>{isVolumeOn ? "Turn off" : "Turn on"}</button>
+                }
                 {
                     (setSecondsLocalStorage === undefined || timerState !== TIMER_STATES.FINISHED) &&
                     (<button className='button' onClick={buttonFunction()}>
