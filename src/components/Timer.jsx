@@ -16,6 +16,13 @@ const stopSound = (sound) => {
 }
 
 function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound, runOnLoad }) {
+    const getRandomGreenColor = () => {
+        const max = 256, min = 128
+        const green = Math.floor(Math.random() * (max - min + 1)) + min
+        const rgb = `rgb(0,${green},0)`
+        return rgb
+    }
+
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
@@ -98,8 +105,20 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
         }
     }
 
+    const getBackgroundColor = () => {
+        if (timerState === TIMER_STATES.FINISHED) {
+            return 'lightcoral'
+        }
+        else if (timerState === TIMER_STATES.PAUSED) {
+            return 'lightslategray'
+        }
+        else {
+            return getRandomGreenColor()
+        }
+    }
+
     return (
-        <div className={`${timerState} timer-section`}>
+        <div className="timer-section" style={{ backgroundColor: getBackgroundColor() }}>
             <p className='title'>{title}</p>
             <p className='timer-display'>{formatTime(seconds)}</p>
             <div className='button-group'>
