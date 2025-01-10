@@ -16,13 +16,7 @@ const stopSound = (sound) => {
 }
 
 function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalStorage, resetMainTimer, sound, runOnLoad }) {
-    const getRandomGreenColor = () => {
-        const max = 256, min = 128
-        const green = Math.floor(Math.random() * (max - min + 1)) + min
-        const rgb = `rgb(0,${green},0)`
-        return rgb
-    }
-
+    const [isBlackBackground, setIsBlackBackground] = useState(true)
     const [seconds, setSeconds] = useState(initialSeconds)
     const [timerState, setTimerState] = useState(TIMER_STATES.PAUSED)
     const timerRef = useRef(null)
@@ -53,6 +47,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
                         }
                         return prev - 1
                     })
+                    setIsBlackBackground(prev => !prev)
                 }, 1000)
             }
         }
@@ -113,7 +108,7 @@ function Timer({ initialSeconds, title, handleChildTimerFinish, setSecondsLocalS
             return 'lightslategray'
         }
         else {
-            return getRandomGreenColor()
+            return isBlackBackground ? 'black' : 'white'
         }
     }
 
